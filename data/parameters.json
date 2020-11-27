@@ -1,0 +1,19 @@
+{
+    "webtemplates": "c:\\Users\\dav\\",
+    "configfiles" : "kfkg",
+    "logfiles" : "dfkkkd",
+    "mqttuser" : "exolifa",
+    "mqttpw" : "shaman",
+    "mqttbrocker" : "192.168.0.20",
+    "topics" :[
+        {
+            "topic" : "DEBUG"
+        },
+        {
+            "topic" : "INFO"
+        },
+        {
+            "topic" : "ALERT"
+        }
+    ]
+}
