@@ -1,19 +1,10 @@
 {
-    "webtemplates": "c:\\Users\\dav\\",
-    "configfiles" : "kfkg",
-    "logfiles" : "dfkkkd",
+    "webtemplates": "d:\\exolifa\\templates\\*",
+    "configfiles" : "d:\\exolifa\\config\\",
+    "logfiles" : "d:\\exolifa\\log\\",
     "mqttuser" : "exolifa",
     "mqttpw" : "shaman",
-    "mqttbrocker" : "192.168.0.20",
-    "topics" :[
-        {
-            "topic" : "DEBUG"
-        },
-        {
-            "topic" : "INFO"
-        },
-        {
-            "topic" : "ALERT"
-        }
-    ]
+    "tcpport" : "8086",
+    "mqttbrocker" : "192.168.0.7:1883",
+    "timezone" : "Europe/Brussels"
 }
