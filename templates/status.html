@@ -1,0 +1,34 @@
+<!--status.html-->
+
+<html>
+	<H1>{{.title}}</H1>
+
+<table border=1>
+<tr>
+<th>Device</th>
+<th>Version</th>
+<th>IP</th>
+<th>FTP user</th>
+<th>FTP pw</th>
+<th>sensor\nactivator</th>
+<th>Last sampling</th>
+<th>Last value</th>
+</tr>
+{{range $index, $element := .payload}}
+<tr>
+	<td>{{$index}}</td>
+	<td>{{.Devversion}}</td>
+	<td>{{.Devip}}</td>
+	<td>{{.Ftpuser}}</td>
+	<td>{{.Ftppw}}</td>
+	</tr>
+	{{range $jndex, $jelem := .Complist}}
+		<tr><td></td><td></td><td></td><td></td><td></td>
+		<td>{{$jndex}}</td>
+		<td>{{.Lasttime}}</td>
+		<td>{{.Lastvalue}}</td></tr>
+	{{end}}
+{{end}}
+</table>
+</html>
+
