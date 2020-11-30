@@ -17,7 +17,8 @@ func SetRoutes() *gin.Engine {
 	r.LoadHTMLGlob(templatedir)
 	// this is the first page ...equivalent to the index.html reference
 	r.GET("/", renders.Statuspage)
-	// this is he route to hanle all requests from the form (carform.html)
+	// this is the page to manage the devices
+	r.GET("/modules", renders.Modulepage)
 	//r.POST("/formcars", processors.FormCars)
 	return r
 }
