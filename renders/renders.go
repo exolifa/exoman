@@ -32,3 +32,8 @@ func Statuspage(c *gin.Context) {
 		"title":   "Status of all identified IoTs",
 		"payload": mycomponentslist}, "status.html")
 }
+
+// Modulepage return full list options to configure, view logs ,etc of a module
+func Modulepage(c *gin.Context) {
+
+}
