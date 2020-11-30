@@ -68,9 +68,22 @@ func Connect(clientID string) mqtt.Client {
 	return client
 }
 
+func reconnect(client mqtt.Client, err error) {
+	go logger.Logme("global", "mqttclient", "Connection lost", "error", fmt.Sprintf("lost connection with error :%s\n", err))
+	client = Connect("exoman-sub")
+	client.Subscribe("#", 0, Processmsg)
+}
+func connLostHandler(c mqtt.Client, err error) {
+	fmt.Printf("Connection lost, reason: %v\n", err)
+
+	//Perform additional action...
+}
+
 func createClientOptions(clientID string) *mqtt.ClientOptions {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(fmt.Sprintf("tcp://%s", params.Getconfig("Brockerid")))
+	opts.SetConnectionLostHandler(reconnect)
+	opts.AutoReconnect = true
 	opts.SetUsername(params.Getconfig("User"))
 	password := params.Getconfig("Password")
 	opts.SetPassword(password)
@@ -99,7 +112,9 @@ func Processmsg(client mqtt.Client, message mqtt.Message) {
 		if _, ok := iotlist[rcviot]; !ok {
 			//			fmt.Printf("%v is new\n", rcviot)
 			if rcvtype == "debug" {
-				addtoiotlist(rcviot, rcvpayload)
+				if rcvtopic[2] == "info" { //this is a response to a INFO request
+					addtoiotlist(rcviot, rcvpayload)
+				}
 			} else {
 				//publish cmd info
 				cmdtopic := "cmd/" + rcviot
