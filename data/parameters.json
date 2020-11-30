@@ -1,7 +1,7 @@
 {
-    "webtemplates": "d:\\exolifa\\templates\\*",
-    "configfiles" : "d:\\exolifa\\config\\",
-    "logfiles" : "d:\\exolifa\\log\\",
+    "webtemplates": "C:\\Users\\dav\\SAGE\\templates\\*",
+    "configfiles" : "C:\\Users\\dav\\SAGE\\config\\",
+    "logfiles" : "C:\\Users\\dav\\SAGE\\log\\",
     "mqttuser" : "exolifa",
     "mqttpw" : "shaman",
     "tcpport" : "8086",
