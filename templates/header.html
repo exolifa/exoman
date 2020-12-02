@@ -15,9 +15,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <style>
+        textarea{
+          columns: 90;
+        }
         table {
             table-layout: fixed;
             display:block;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+            border: solid 1px black;
+        }
+        th {
+          width: 100%;
+          padding: 5px;
+          background-color:aquamarine;
+          border:solid 1 px  black;
+        }
+        td {
+          max-width:100%;
+          padding: 5px;
+          white-space:nowrap;
+          border: solid 1px black;
         }
         thead {
             display: inline-block;
@@ -26,7 +45,7 @@
             
         }
         tbody {
-            height: 500px;
+            height:95%;
             display: inline-block;
             width: 100%;
             overflow:scroll;

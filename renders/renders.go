@@ -9,6 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type configdata struct {
+	devicelist []string
+	configlist []string
+}
+
 // render to handle all types of request (html ,json,xml
 func render(c *gin.Context, data gin.H, templateName string) {
 	switch c.Request.Header.Get("Accept") {
@@ -35,5 +40,11 @@ func Statuspage(c *gin.Context) {
 
 // Modulepage return full list options to configure, view logs ,etc of a module
 func Modulepage(c *gin.Context) {
-
+	go logger.Logme("global", "renders", "modulespage", "info", fmt.Sprint("building modules page"))
+	var myconfiglist configdata
+	myconfiglist.devicelist = mqttclient.Getdevices()
+	myconfiglist.configlist = config.Getconf()
+	render(c, gin.H{
+		"title":   "Status of all identified IoTs",
+		"payload": mycomponentslist}, "modules.html")
 }

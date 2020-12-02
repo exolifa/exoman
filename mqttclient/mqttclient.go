@@ -55,6 +55,14 @@ func Getlist() map[string]*Iotdevice {
 	return iotlist
 }
 
+func Getdevices() []string {
+	var tmp []string
+	for cle := range iotlist {
+		tmp = append(tmp, cle)
+	}
+	return tmp
+}
+
 // Connect initiates a connections to MQTT brocker
 func Connect(clientID string) mqtt.Client {
 	opts := createClientOptions(clientID)

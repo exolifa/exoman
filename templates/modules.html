@@ -1,0 +1,17 @@
+<!--status.html-->
+{{template "header.html" .}}
+<table>
+    {{range $i, $user := .UserNames}}
+{{$check := index $.Checks $i}}
+    {{$configfile := index $.Configlist 0 }}
+    {{$configdev  := index $.Configlist 1 }}
+<tr>
+    <td>
+        <textarea name="configfile">{{$configfile}}</textarea>
+    </td>
+    <td>
+        <textarea name="configdev">{{$configdev}}</textarea>
+    </td>
+</tr>
+
+</table>

@@ -1,0 +1,6 @@
+<form name="modules" method="POST">
+    <select name="myselect" id="myselect">
+        {{range $dev := .deviceslist}}
+            <option value="$dev">$dev</option>
+        {{end}}
+    </select>
