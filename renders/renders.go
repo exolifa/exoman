@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"exolifa.com/exoman/config"
 	"exolifa.com/exoman/logger"
 	"exolifa.com/exoman/mqttclient"
 	"github.com/gin-gonic/gin"
@@ -42,9 +43,18 @@ func Statuspage(c *gin.Context) {
 func Modulepage(c *gin.Context) {
 	go logger.Logme("global", "renders", "modulespage", "info", fmt.Sprint("building modules page"))
 	var myconfiglist configdata
+	action := c.PostForm("action")
+	target := c.PostForm("target")
+	switch action {
+	case "Scan":
+	case "Update":
+	case "Save":
+	case "Retrieve":
+	default:
+	}
 	myconfiglist.devicelist = mqttclient.Getdevices()
-	myconfiglist.configlist = config.Getconf()
+	myconfiglist.configlist = config.Get(target)
 	render(c, gin.H{
 		"title":   "Status of all identified IoTs",
-		"payload": mycomponentslist}, "modules.html")
+		"payload": myconfiglist}, "modules.html")
 }

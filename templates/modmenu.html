@@ -1,5 +1,5 @@
 <form name="modules" method="POST">
-    <select name="myselect" id="myselect">
+    <select name="target" id="myselect">
         {{range $dev := .deviceslist}}
             <option value="$dev">$dev</option>
         {{end}}

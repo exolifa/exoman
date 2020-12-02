@@ -1,5 +1,6 @@
 <!--status.html-->
 {{template "header.html" .}}
+{{template "modmenu.html"}}
 <table>
     {{range $i, $user := .UserNames}}
 {{$check := index $.Checks $i}}
@@ -13,5 +14,8 @@
         <textarea name="configdev">{{$configdev}}</textarea>
     </td>
 </tr>
-
 </table>
+<button type="submit" name="action" value="Update">Save config to disk</button>
+<button type="submit" name="action" value="Save">Save As config to disk</button>
+<button type="submit" name="action" value="Retrieve">Retrieve config from device</button>
+<button type="submit" name="action" value="Scan">Build config from scan</button>
