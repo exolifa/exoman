@@ -1,7 +1,7 @@
 {
-    "webtemplates": "C:\\Users\\dav\\SAGE\\templates\\*",
-    "configfiles" : "C:\\Users\\dav\\SAGE\\config\\",
-    "logfiles" : "C:\\Users\\dav\\SAGE\\log\\",
+    "webtemplates": "C:\\Users\\dav\\exoman\\templates\\*",
+    "configfiles" : "C:\\Users\\dav\\exoman\\config\\",
+    "logfiles" : "C:\\Users\\dav\\exoman\\log\\",
     "mqttuser" : "exolifa",
     "mqttpw" : "shaman",
     "tcpport" : "8086",
