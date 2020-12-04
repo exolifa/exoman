@@ -1,6 +1,7 @@
-<form name="modules" method="POST">
+<form name="modules" method="POST" action="/modules">
     <select name="target" id="myselect">
-        {{range $dev := .deviceslist}}
-            <option value="$dev">$dev</option>
+        {{range $i, $dev := .payload.Devicelist}}
+            <option value="{{$dev}}">{{$dev}}</option>
         {{end}}
     </select>
+    <button name="action" type="submit" value="Load">Choisir</button>

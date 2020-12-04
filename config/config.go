@@ -21,6 +21,7 @@ func fileExists(filename string) bool {
 func Get(target string) []string {
 	var temp []string
 	cible := params.Getconfig("Configfiles") + target + ".json"
+	fmt.Printf("looking for file:%s\n", cible)
 	if fileExists(cible) {
 		content, err := ioutil.ReadFile(cible)
 		if err != nil {
@@ -28,11 +29,13 @@ func Get(target string) []string {
 		}
 
 		// Convert []byte to string and print to screen
-		temp[0] = string(content)
+		temp = append(temp, string(content))
 	} else {
-		temp[0] = ""
+		fmt.Println("disk config not loaded")
+		temp = append(temp, "no data")
 	}
 	cible1 := params.Getconfig("Configfiles") + "actual/" + target + ".json"
+	fmt.Printf("looking for file:%s\n", cible1)
 	if fileExists(cible1) {
 		content1, err := ioutil.ReadFile(cible1)
 		if err != nil {
@@ -40,9 +43,10 @@ func Get(target string) []string {
 		}
 
 		// Convert []byte to string and print to screen
-		temp[1] = string(content1)
+		temp = append(temp, string(content1))
 	} else {
-		temp[1] = ""
+		fmt.Println("actual file not loaded")
+		temp = append(temp, "no data")
 	}
 	return temp
 }

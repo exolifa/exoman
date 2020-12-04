@@ -10,9 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type configdata struct {
-	devicelist []string
-	configlist []string
+// Configdata donnée pour envoyer vers module.html
+type Configdata struct {
+	Devicelist []string
+	Configlist []string
 }
 
 // render to handle all types of request (html ,json,xml
@@ -42,7 +43,7 @@ func Statuspage(c *gin.Context) {
 // Modulepage return full list options to configure, view logs ,etc of a module
 func Modulepage(c *gin.Context) {
 	go logger.Logme("global", "renders", "modulespage", "info", fmt.Sprint("building modules page"))
-	var myconfiglist configdata
+	var myconfiglist Configdata
 	action := c.PostForm("action")
 	target := c.PostForm("target")
 	switch action {
@@ -52,8 +53,13 @@ func Modulepage(c *gin.Context) {
 	case "Retrieve":
 	default:
 	}
-	myconfiglist.devicelist = mqttclient.Getdevices()
-	myconfiglist.configlist = config.Get(target)
+	myconfiglist.Devicelist = mqttclient.Getdevices()
+	myconfiglist.Configlist = config.Get(target)
+	fmt.Printf("données reçues:%v\n", myconfiglist)
+	data := make(map[string][]string)
+	data["demo"] = myconfiglist.Devicelist
+	data["autre"] = myconfiglist.Configlist
+	//c.HTML(http.StatusOK, "modules.html", data)
 	render(c, gin.H{
 		"title":   "Status of all identified IoTs",
 		"payload": myconfiglist}, "modules.html")

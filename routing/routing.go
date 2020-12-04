@@ -19,6 +19,7 @@ func SetRoutes() *gin.Engine {
 	r.GET("/", renders.Statuspage)
 	// this is the page to manage the devices
 	r.GET("/modules", renders.Modulepage)
+	r.POST("/modules", renders.Modulepage)
 	//r.POST("/formcars", processors.FormCars)
 	return r
 }
