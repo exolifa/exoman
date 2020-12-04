@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"os"
+	"sort"
 	"sync"
 	"time"
 
@@ -31,6 +32,29 @@ func init() {
 	Logme("global", "logger", "not MQTT", "info", "System Logger started")
 	log.SetOutput(writer)
 	return
+}
+
+//Getlog provides a list of all existing logs
+func Getlogs() []string {
+	var tmp []string
+	logdir := params.Getconfig("Logfiles")
+	f, err := os.Open(logdir)
+	if err != nil {
+		Logme("global", "logger", "GetLog", "fatal", fmt.Sprintf("Failed to Open log directory %s", err))
+		return nil
+	}
+	list, err := f.Readdir(-1)
+	f.Close()
+	if err != nil {
+		Logme("global", "logger", "GetLog", "fatal", fmt.Sprintf("Failed list directory content %s", err))
+		return nil
+	}
+	sort.Slice(list, func(i, j int) bool { return list[i].Name() < list[j].Name() })
+	for i := 0; i < len(list); i++ {
+		tmp = append(tmp, list[i].Name())
+	}
+	return tmp
+
 }
 
 // Logme will allow logging to all programs based on logrus (it just provide a single point to change if decided to use other logger)
