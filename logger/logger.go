@@ -34,7 +34,7 @@ func init() {
 	return
 }
 
-//Getlog provides a list of all existing logs
+//Getlogs provides a list of all existing logs
 func Getlogs() []string {
 	var tmp []string
 	logdir := params.Getconfig("Logfiles")
