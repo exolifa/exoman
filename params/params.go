@@ -35,6 +35,29 @@ func init() {
 	fmt.Printf("Param file title :%v\n", string(fic))
 	fmt.Printf("lecture faite: %v\n", Conf)
 	fmt.Printf("%v, %v, %v, %v,%v", Conf.Configfiles, Conf.Logfiles, Conf.Webtemplates, Conf.Brockerid, Conf.Tcpport)
+	// check if the specified directories exist if not create them
+	if _, err := os.Stat(Conf.Configfiles); os.IsNotExist(err) {
+		// config files directory does not exist
+		err := os.Mkdir(Conf.Configfiles, 0755)
+		if err != nil {
+			fmt.Printf("unable to create %s ;error =%v\n", Conf.Configfiles, err)
+		}
+	}
+	actualfiles := Conf.Configfiles + "actual\\"
+	if _, err := os.Stat(actualfiles); os.IsNotExist(err) {
+		// actuel config files directory does not exist
+		err := os.Mkdir(actualfiles, 0755)
+		if err != nil {
+			fmt.Printf("unable to create %s ;error =%v\n", actualfiles, err)
+		}
+	}
+	if _, err := os.Stat(Conf.Logfiles); os.IsNotExist(err) {
+		// log files directory does not exist
+		err := os.Mkdir(Conf.Logfiles, 0755)
+		if err != nil {
+			fmt.Printf("unable to create %s ;error =%v\n", Conf.Logfiles, err)
+		}
+	}
 }
 
 // Getconfig allows all module to get value of any parameter

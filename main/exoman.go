@@ -8,6 +8,9 @@ import (
 	"exolifa.com/exoman/routing"
 )
 
+// version of the software
+const Version = "0.0.3"
+
 func main() {
 	fmt.Println("Starting Exolifa Management")
 	logger.Logme("global", "main", "not MQTT", "info", "Starting Exolifa Management")

@@ -11,6 +11,7 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/secsy/goftp v0.0.0-20200609142545-aa2de14babf4
 	github.com/sirupsen/logrus v1.7.0
 	github.com/tebeka/strftime v0.1.5 // indirect
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect

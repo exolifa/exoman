@@ -1,7 +1,10 @@
 package logger
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"sort"
 	"sync"
@@ -11,6 +14,15 @@ import (
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	log "github.com/sirupsen/logrus"
 )
+
+// Logdata is the structure of the log files
+type Logdata struct {
+	Time   string `json:"time"`
+	Msg    string `json:"msg"`
+	Module string `json:"module"`
+	Origin string `json:"origin"`
+	Level  string `json:"level"`
+}
 
 var mutex sync.Mutex
 
@@ -84,4 +96,44 @@ func Logme(target string, module string, topic string, level string, payload str
 		log.WithFields(log.Fields{"module": module, "origin": topic}).Warn(payload)
 	}
 	mutex.Unlock()
+}
+
+// Loglist returns the list of available log files
+func Loglist() []string {
+	var tmp []string
+	f, err := os.Open(params.Getconfig("Logfiles"))
+	if err != nil {
+		Logme("global", "logger", "Loglist", "fatal", fmt.Sprintf("Failed to open %s error is %v", params.Getconfig("Logfiles"), err))
+		return nil
+	}
+	list, err := f.Readdir(-1)
+	f.Close()
+	if err != nil {
+		Logme("global", "logger", "Loglist", "fatal", fmt.Sprintf("Failed to read %s error is %v", params.Getconfig("Logfiles"), err))
+		return nil
+	}
+	sort.Slice(list, func(i, j int) bool { return list[i].Name() < list[j].Name() })
+	for i := 0; i < len(list); i++ {
+		tmp = append(tmp, list[i].Name())
+	}
+	return tmp
+}
+
+// Logview returns a string with the log records for the targetted log file
+func Logview(target string) []Logdata {
+	var tmp []Logdata
+	logfyle := params.Getconfig("Logfiles") + target
+	fic, ficerr := ioutil.ReadFile(logfyle)
+	if ficerr != nil {
+		Logme("global", "logger", "Loglist", "error", fmt.Sprintf("Failed to read %s error is %v", logfyle, ficerr))
+	} else {
+		for _, line := range bytes.Split(fic, []byte{'\n'}) {
+			var v Logdata
+			if err := json.Unmarshal(line, &v); err != nil {
+				Logme("global", "logger", "Loglist", "erro", fmt.Sprintf("Failed to unmarshall %v error is %v", line, err))
+			}
+			tmp = append(tmp, v)
+		}
+	}
+	return tmp
 }

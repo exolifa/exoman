@@ -9,6 +9,14 @@ import (
 	"exolifa.com/exoman/params"
 )
 
+// Save saved the edited string to config file
+func Save(target string, data []byte) {
+	cible := params.Getconfig("Configfiles") + target + ".json"
+	err := ioutil.WriteFile(cible, data, 0644)
+	if err != nil {
+		go logger.Logme("global", "config", "Save", "fatal", fmt.Sprintf("error writing disk config:%v", err))
+	}
+}
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {

@@ -1,7 +1,7 @@
 {
-    "webtemplates": "C:\\Users\\dav\\exoman\\templates\\*",
-    "configfiles" : "C:\\Users\\dav\\exoman\\config\\",
-    "logfiles" : "C:\\Users\\dav\\exoman\\log\\",
+    "webtemplates": "D:\\exolifa\\exoman\\templates\\*",
+    "configfiles" : "D:\\exolifa\\config\\",
+    "logfiles" : "D:\\exolifa\\log\\",
     "mqttuser" : "exolifa",
     "mqttpw" : "shaman",
     "tcpport" : "8086",

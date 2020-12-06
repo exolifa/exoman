@@ -3,12 +3,15 @@ package mqttclient
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"strings"
 	"time"
 
 	"exolifa.com/exoman/logger"
 	"exolifa.com/exoman/params"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/secsy/goftp"
 )
 
 // IoTComp contains information of the device's sensors and actuators it is maintained with all info circulating on the MQTT
@@ -40,6 +43,11 @@ func (iot Iotdevice) String() string {
 // iotlist
 var iotlist map[string]*Iotdevice
 
+var scanreceived bool
+
+// Client is the  session used by the different processes
+var Client mqtt.Client
+
 func addtoiotlist(candi string, payload []byte) {
 	tmp := new(Iotdevice)
 	//	fmt.Printf("device: %s and payload %v\n", candi, string(payload[:]))
@@ -50,17 +58,34 @@ func addtoiotlist(candi string, payload []byte) {
 	iotlist[candi].Complist = make(map[string]*IoTComp)
 }
 
+//Scan function collects all the probes from a device
+func Scan(target string) {
+	topic := "cmd/" + target
+	msg := "SCAN"
+	scanreceived = false
+	Publication(Client, topic, msg)
+	for scanreceived {
+		time.Sleep(1 * time.Second)
+	}
+}
+
 //Getlist send the list of currently discovered IoT
 func Getlist() map[string]*Iotdevice {
 	return iotlist
 }
 
+// Getdevices send a list of all discovered devices
 func Getdevices() []string {
 	var tmp []string
 	for cle := range iotlist {
 		tmp = append(tmp, cle)
 	}
 	return tmp
+}
+
+// GetIP return the ip address of a specific device
+func GetIP(target string) string {
+	return iotlist[target].Devip
 }
 
 // Connect initiates a connections to MQTT brocker
@@ -123,6 +148,9 @@ func Processmsg(client mqtt.Client, message mqtt.Message) {
 				if rcvtopic[2] == "info" { //this is a response to a INFO request
 					addtoiotlist(rcviot, rcvpayload)
 				}
+				if rcvtopic[2] == "scan" { //this a response to a SCAN request
+					Buildfromscan(rcviot, iotlist[rcviot].Devip, rcvpayload)
+				}
 			} else {
 				//publish cmd info
 				cmdtopic := "cmd/" + rcviot
@@ -149,8 +177,78 @@ func Publication(client mqtt.Client, topic string, msg string) {
 // Listen captures all messages in MQTT
 func init() {
 	fmt.Println("initiating connect ")
-	client := Connect("exoman-sub")
+	Client = Connect("mqtt-goclient")
+
 	fmt.Println("subscribing to all messages")
-	client.Subscribe("#", 0, Processmsg)
+	Client.Subscribe("#", 0, Processmsg)
 	iotlist = make(map[string]*Iotdevice)
+}
+
+// Ftp is the function to communicate with the file system of the devices
+func Ftp(target string, ip string, direction int) {
+	// Create client object with default config
+	cible := params.Getconfig("Configfiles") + "actual\\" + target + ".json"
+	config := goftp.Config{
+		User:               iotlist[target].Ftpuser,
+		Password:           iotlist[target].Ftppw,
+		ConnectionsPerHost: 1,
+		Timeout:            10 * time.Second,
+		Logger:             os.Stderr,
+	}
+	client, err := goftp.DialConfig(config, ip)
+	if err != nil {
+		panic(err)
+	}
+	switch direction {
+	case 0: //this is a download
+		fic, err := os.Create(cible)
+		if err != nil {
+			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error creating disk config:%v", err))
+		}
+		err = client.Retrieve("config.json", fic)
+		if err != nil {
+			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error retrieving device config:%v", err))
+		}
+	case 1: //this is an upload
+		if fileExists(cible) {
+			fic, err := os.Open(cible)
+			if err != nil {
+				go logger.Logme("global", "config", "FTP", "fatal", fmt.Sprintf("error open disk config:%v", err))
+			}
+			err = client.Store("config.json", fic)
+			if err != nil {
+				go logger.Logme("global", "config", "FTP", "fatal", fmt.Sprintf("error writing device config:%v", err))
+			}
+		} else {
+			go logger.Logme("global", "config", "FTP", "error", fmt.Sprintf("file does not exists on disk(%s):%v", cible, err))
+		}
+	}
+}
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
+
+// Buildfromscan write an actual file from scan result
+func Buildfromscan(target string, ip string, content []byte) {
+	// first get the json object from actual file
+	// import the actual configuration
+	Ftp(target, ip, 0)
+	cible := params.Getconfig("Configfiles") + "actual/" + target + ".json"
+	readcfg, err := ioutil.ReadFile(cible)
+	if err != nil {
+		go logger.Logme("global", "config", "Buildfromscan", "error", fmt.Sprintf("error reading actual  config:%v", err))
+	}
+	currcfg := map[string]interface{}{}
+	scancfg := map[string]interface{}{}
+	json.Unmarshal([]byte(readcfg), &currcfg)
+	json.Unmarshal(content, &scancfg)
+	currcfg["bus"] = scancfg["bus"]
+	cfgfile, _ := os.OpenFile(cible, os.O_CREATE, os.ModePerm)
+	defer cfgfile.Close()
+	encoder := json.NewEncoder(cfgfile)
+	encoder.Encode(currcfg)
 }

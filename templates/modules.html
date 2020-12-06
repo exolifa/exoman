@@ -1,7 +1,11 @@
-<!--status.html-->
+<!--modules.html-->
 {{template "header.html" .}}
 {{template "modmenu.html" .}}
 <table>
+    <tr>
+        <th>Configuration on disk</th>
+        <th>Actual configuration (on the device)</th>
+    </tr>
     <tr>
         <td class="fifty"> 
             <textarea name="configfile">{{index .payload.Configlist 0}}</textarea>
@@ -12,7 +16,7 @@
     </tr>
 </table>
 <button type="submit" name="action" value="Update">Save config to disk</button>
-<button type="submit" name="action" value="Save">Save As config to disk</button>
+<button type="submit" name="action" value="Upload">Upload saved config to device</button>
 <button type="submit" name="action" value="Retrieve">Retrieve config from device</button>
 <button type="submit" name="action" value="Scan">Build config from scan</button>
 </form>

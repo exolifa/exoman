@@ -1,0 +1,7 @@
+<form name="logs" method="POST" action="/logs">
+    <select name="target" id="myselect">
+        {{range $i, $dev := .payload.Logfyles}}
+            <option value="{{$dev}}" {{if eq $.payload.Oldlog  $dev }} selected {{end}}>{{$dev}}</option>
+        {{end}}
+    </select>
+    <button name="action" type="submit" value="Load">Choisir</button>

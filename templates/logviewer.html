@@ -1,0 +1,33 @@
+<!--logviewer.html-->
+{{template "header.html" .}}
+{{template "logmenu.html" .}}
+<table>
+    <tr>
+        <th>Level</th>
+        <th>Time</th>
+        <th>Message</th>
+        <th>Librairie</th>
+        <th>Fonction</th>
+    </tr>
+    {{range $i , $dev :=  .payload.Logenreg}}
+    <tr>
+        <td class= {{if  eq $dev.Level  "error" }} errlog {{ else }} {{ if eq $dev.Level "fatal" }} fatallog {{ else }} {{ if eq $dev.Level "warning" }} warnlog {{ else }} infolog {{ end }}{{end}}{{end}}> 
+            {{.Level}}
+        </td>
+        <td class= {{if  eq $dev.Level  "error" }} errlog {{ else }} {{ if eq $dev.Level "fatal" }} fatallog {{ else }} {{ if eq $dev.Level "warning" }} warnlog {{ else }} infolog {{ end }}{{end}}{{end}}> 
+            {{.Time}}
+        </td>
+        <td class= {{if  eq $dev.Level  "error" }} errlog {{ else }} {{ if eq $dev.Level "fatal" }} fatallog {{ else }} {{ if eq $dev.Level "warning" }} warnlog {{ else }} infolog {{ end }}{{end}}{{end}}> 
+            {{.Msg}}
+        </td>
+        <td class= {{if  eq $dev.Level  "error" }} errlog {{ else }} {{ if eq $dev.Level "fatal" }} fatallog {{ else }} {{ if eq $dev.Level "warning" }} warnlog {{ else }} infolog {{ end }}{{end}}{{end}}> 
+            {{.Module}}
+        </td>
+        <td class= {{if  eq $dev.Level  "error" }} errlog {{ else }} {{ if eq $dev.Level "fatal" }} fatallog {{ else }} {{ if eq $dev.Level "warning" }} warnlog {{ else }} infolog {{ end }}{{end}}{{end}}> 
+            {{.Origin}}
+        </td>
+    </tr>
+    {{end}}
+</table>
+</form>
+{{template "footer.html" .}}

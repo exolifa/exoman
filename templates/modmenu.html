@@ -1,7 +1,7 @@
 <form name="modules" method="POST" action="/modules">
     <select name="target" id="myselect">
         {{range $i, $dev := .payload.Devicelist}}
-            <option value="{{$dev}}">{{$dev}}</option>
+            <option value="{{$dev}}" {{if eq $.payload.Oldtarget $dev }} selected {{end}}>{{$dev}}</option>
         {{end}}
     </select>
     <button name="action" type="submit" value="Load">Choisir</button>
