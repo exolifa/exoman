@@ -58,14 +58,26 @@ func addtoiotlist(candi string, payload []byte) {
 	iotlist[candi].Complist = make(map[string]*IoTComp)
 }
 
-//Scan function collects all the probes from a device
-func Scan(target string) {
+//Commande function collects all the probes from a device
+func Commande(target string, oper string) {
 	topic := "cmd/" + target
-	msg := "SCAN"
-	scanreceived = false
-	Publication(Client, topic, msg)
-	for scanreceived {
-		time.Sleep(1 * time.Second)
+	switch oper {
+	case "scan":
+		msg := "SCAN"
+		scanreceived = false
+		Publication(Client, topic, msg)
+		for scanreceived {
+			time.Sleep(1 * time.Second)
+		}
+	case "reboot":
+		msg := "REBOOT"
+		Publication(Client, topic, msg)
+	case "register":
+		msg := "REGISTER"
+		Publication(Client, topic, msg)
+	case "info":
+		msg := "INFO"
+		Publication(Client, topic, msg)
 	}
 }
 

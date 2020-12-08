@@ -8,12 +8,11 @@ import (
 	"exolifa.com/exoman/routing"
 )
 
-// version of the software
-const Version = "0.0.3"
-
 func main() {
 	fmt.Println("Starting Exolifa Management")
-	logger.Logme("global", "main", "not MQTT", "info", "Starting Exolifa Management")
+	//	logger.Logme("global", "main", "System", "fatal", "*******************************")
+	logger.Logme("global", "main", "System", "info", "* Starting Exolifa Management *")
+	//	logger.Logme("global", "main", "System", "fatal", "*******************************")
 	routeur := routing.SetRoutes()
 	myport := ":" + params.Getconfig("Tcpport")
 	routeur.Run(myport)

@@ -24,6 +24,24 @@ type Logrec struct {
 	Logenreg []logger.Logdata
 }
 
+// version of the software
+const version = "0.5.0"
+const author = "Daniel Vielvoye"
+const contact = "exolifa@gmail.com"
+const pubdate = "6 décembre 2020"
+const licence = "All Rigth Reserved"
+
+// Getversion provides info for About pages
+func Getversion() []string {
+	var tmp []string
+	tmp = append(tmp, version)
+	tmp = append(tmp, author)
+	tmp = append(tmp, contact)
+	tmp = append(tmp, pubdate)
+	tmp = append(tmp, licence)
+	return tmp
+}
+
 // render to handle all types of request (html ,json,xml
 func render(c *gin.Context, data gin.H, templateName string) {
 	switch c.Request.Header.Get("Accept") {
@@ -56,7 +74,13 @@ func Modulepage(c *gin.Context) {
 	target := c.PostForm("target")
 	switch action {
 	case "Scan":
-		mqttclient.Scan(target)
+		mqttclient.Commande(target, "scan")
+	case "Reboot":
+		mqttclient.Commande(target, "reboot")
+	case "Register":
+		mqttclient.Commande(target, "register")
+	case "Refresh":
+		mqttclient.Commande(target, "info")
 	case "Update":
 		cfg := c.PostForm("configfile")
 		config.Save(target, []byte(cfg))
@@ -90,4 +114,12 @@ func Logpage(c *gin.Context) {
 	render(c, gin.H{
 		"title":   "Status of all identified IoTs",
 		"payload": myloglist}, "logviewer.html")
+}
+
+// Aboutpage return full list options to configure, view logs ,etc of a module
+func Aboutpage(c *gin.Context) {
+	go logger.Logme("global", "renders", "aboutpage", "info", fmt.Sprint("building about page"))
+	render(c, gin.H{
+		"title":   "Status of all identified IoTs",
+		"payload": Getversion()}, "about.html")
 }

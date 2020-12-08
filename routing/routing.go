@@ -22,6 +22,7 @@ func SetRoutes() *gin.Engine {
 	r.POST("/modules", renders.Modulepage)
 	r.GET("/logs", renders.Logpage)
 	r.POST("/logs", renders.Logpage)
+	r.GET("/about", renders.Aboutpage)
 	//r.POST("/formcars", processors.FormCars)
 	return r
 }
