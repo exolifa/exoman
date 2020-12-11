@@ -81,7 +81,7 @@ func Modulepage(c *gin.Context) {
 		mqttclient.Commande(target, "register")
 	case "Refresh":
 		mqttclient.Commande(target, "info")
-	case "Refresh":
+	case "Inventaire":
 		mqttclient.Commande(target, "inventaire")
 	case "Update":
 		cfg := c.PostForm("configfile")
