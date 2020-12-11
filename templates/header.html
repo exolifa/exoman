@@ -87,11 +87,22 @@
             background: black; 
             margin-bottom: 20px; 
         } 
-        body {
+body, html {
   margin: 0;
   padding: 0;
 }
+.bg {
+  /* The image used */
+  background-image: url ("https://i.imgur.com/m5tTVPV.jpg") ;
+  /* Full height */
+  height: 100%; 
 
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+   
+}
 .logo {
   float: left;
 }
@@ -141,10 +152,12 @@ float:left;
 #menu {
   float: right;
 }
+
     </style> 
 </head>
 <!--Embed the menu.html template at this location-->
 
 <body class="container">
+  <div class="bg">
     <!--Embed the menu.html template at this location-->
     {{ template "menu.html" . }}

@@ -25,7 +25,7 @@ type Logrec struct {
 }
 
 // version of the software
-const version = "0.5.0"
+const version = "1.0.0"
 const author = "Daniel Vielvoye"
 const contact = "exolifa@gmail.com"
 const pubdate = "6 décembre 2020"
@@ -81,6 +81,8 @@ func Modulepage(c *gin.Context) {
 		mqttclient.Commande(target, "register")
 	case "Refresh":
 		mqttclient.Commande(target, "info")
+	case "Refresh":
+		mqttclient.Commande(target, "inventaire")
 	case "Update":
 		cfg := c.PostForm("configfile")
 		config.Save(target, []byte(cfg))

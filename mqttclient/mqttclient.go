@@ -78,6 +78,10 @@ func Commande(target string, oper string) {
 	case "info":
 		msg := "INFO"
 		Publication(Client, topic, msg)
+	case "inventaire":
+		topic := "broadcast/" 
+		msg := "INFO"
+		Publication(Client, topic, msg)
 	}
 }
 
