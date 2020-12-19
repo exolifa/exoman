@@ -3,7 +3,7 @@ FROM golang:alpine AS builder
 # Set necessary environment variables needed for our image
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
-    GOOS=linux \
+    GOOS=linux 
 
 # Move to working directory /build
 WORKDIR /build
@@ -23,7 +23,7 @@ RUN go build -o exoman
 # Build a small image
 FROM alpine:latest
 # add TimeZone package 
-RUN apk --no-cache add tzdata
+
 # create the /opt/exolifa/bin directory
 RUN mkdir -p /opt/exolifa/bin
 # copy the compiled code to it
