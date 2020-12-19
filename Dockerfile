@@ -23,7 +23,7 @@ RUN go build -o exoman
 # Build a small image
 FROM alpine:latest
 # add TimeZone package 
-
+RUN apk add tzdata
 # create the /opt/exolifa/bin directory
 RUN mkdir -p /opt/exolifa/bin
 # copy the compiled code to it
