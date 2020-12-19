@@ -1,0 +1,10 @@
+{
+    "webtemplates": "/opt/exolifa/templates/*",
+    "configfiles" : "/opt/exolifa/config/",
+    "logfiles" : "/opt/exolifa/log/",
+    "mqttuser" : "exolifa",
+    "mqttpw" : "shaman",
+    "tcpport" : "8086",
+    "mqttbrocker" : "192.168.0.7:1883",
+    "timezone" : "Europe/Paris"
+}

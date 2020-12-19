@@ -79,7 +79,7 @@ func Commande(target string, oper string) {
 		msg := "INFO"
 		Publication(Client, topic, msg)
 	case "inventaire":
-		topic := "broadcast/" 
+		topic := "broadcast/"
 		msg := "INFO"
 		Publication(Client, topic, msg)
 	}

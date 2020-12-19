@@ -39,9 +39,9 @@ func init() {
 		rotatelogs.WithRotationTime(time.Hour*6),
 	)
 	if err != nil {
-		Logme("global", "logger", "not MQTT", "fatal", fmt.Sprintf("Failed to Initialize Log File %s", err))
+		Logme("global", "logger", "init", "fatal", fmt.Sprintf("Failed to Initialize Log File %s", err))
 	}
-	Logme("global", "logger", "not MQTT", "info", "System Logger started")
+	Logme("global", "logger", "init", "info", "System Logger started")
 	log.SetOutput(writer)
 	return
 }
@@ -74,7 +74,7 @@ func Logme(target string, module string, topic string, level string, payload str
 	mutex.Lock()
 	logdir := params.Getconfig("Logfiles")
 	glblog := logdir + target + ".log"
-	file, err := os.OpenFile(glblog, os.O_CREATE|os.O_APPEND, 0644)
+	file, err := os.OpenFile(glblog, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Printf("raté l'ouverture:%v\n", err)
 		log.Fatal(err)
@@ -125,14 +125,16 @@ func Logview(target string) []Logdata {
 	logfyle := params.Getconfig("Logfiles") + target
 	fic, ficerr := ioutil.ReadFile(logfyle)
 	if ficerr != nil {
-		Logme("global", "logger", "Loglist", "error", fmt.Sprintf("Failed to read %s error is %v", logfyle, ficerr))
+		Logme("global", "logger", "Logview", "error", fmt.Sprintf("Failed to read %s error is %v", logfyle, ficerr))
 	} else {
 		for _, line := range bytes.Split(fic, []byte{'\n'}) {
 			var v Logdata
-			if err := json.Unmarshal(line, &v); err != nil {
-				Logme("global", "logger", "Loglist", "erro", fmt.Sprintf("Failed to unmarshall %v error is %v", line, err))
+			if len(line) > 1 {
+				if err := json.Unmarshal(line, &v); err != nil {
+					Logme("global", "logger", "Logview", "error", fmt.Sprintf("Failed to unmarshall %v error is %v", line, err))
+				}
+				tmp = append(tmp, v)
 			}
-			tmp = append(tmp, v)
 		}
 	}
 	return tmp
