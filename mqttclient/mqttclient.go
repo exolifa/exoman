@@ -48,7 +48,7 @@ var scanreceived bool
 
 // Client is the  session used by the different processes
 var Client mqtt.Client
-var string clientid
+var clientid string
 
 
 func addtoiotlist(candi string, payload []byte) {
@@ -197,7 +197,7 @@ func Publication(client mqtt.Client, topic string, msg string) {
 func init() {
 	fmt.Println("initiating connect ")
 	rand.Seed(time.Now().UnixNano())
-	clientid:= "exoman-client"+strconv.Itoa(rand.Intn(2))
+	clientid= "exoman-client"+strconv.Itoa(rand.Intn(2))
 	Client = Connect(clientid)
 
 	fmt.Println("subscribing to all messages")
