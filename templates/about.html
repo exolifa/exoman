@@ -1,4 +1,8 @@
-{{.payload}}
+{{template "header.html" .}}
+<CENTER>
+<H1>
+A propos de cette application
+  </H1>
 <H2>
 Version: {{index .payload 0 }}<br>
 Auteur : {{index .payload 1 }}<br>
@@ -6,3 +10,5 @@ Contact: {{index .payload 2 }}<br>
 Publié : {{index .payload 3 }}<br>
 Licence: {{index .payload 4 }}
 </H2>
+</CENTER>
+{{template "footer.html" .}}
