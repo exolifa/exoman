@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 	"time"
-
+	"math/rand"
+	"strconv"
 	"exolifa.com/exoman/logger"
 	"exolifa.com/exoman/params"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -47,6 +48,8 @@ var scanreceived bool
 
 // Client is the  session used by the different processes
 var Client mqtt.Client
+var string clientid
+
 
 func addtoiotlist(candi string, payload []byte) {
 	tmp := new(Iotdevice)
@@ -119,7 +122,7 @@ func Connect(clientID string) mqtt.Client {
 
 func reconnect(client mqtt.Client, err error) {
 	go logger.Logme("global", "mqttclient", "Connection lost", "error", fmt.Sprintf("lost connection with error :%s\n", err))
-	client = Connect("exoman-sub")
+	client = Connect(clientid)
 	client.Subscribe("#", 0, Processmsg)
 }
 func connLostHandler(c mqtt.Client, err error) {
@@ -193,7 +196,9 @@ func Publication(client mqtt.Client, topic string, msg string) {
 // Listen captures all messages in MQTT
 func init() {
 	fmt.Println("initiating connect ")
-	Client = Connect("mqtt-goclient")
+	rand.Seed(time.Now().UnixNano())
+	clientid:= "exoman-client"+strconv.Itoa(rand.Intn(2))
+	Client = Connect(clientid)
 
 	fmt.Println("subscribing to all messages")
 	Client.Subscribe("#", 0, Processmsg)
