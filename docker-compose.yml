@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  exoman:
+    image: "exolifa/exoman:latest"
+    ports:
+      - "8086:8086"
+    volumes:
+      - /home/exolifa/exoman/log:/opt/exolifa/log
+      - /home/exolifa/exoman/config:/opt/exolifa/data
+      - /home/exolifa/exoman/templates:/opt/exolifa/templates
