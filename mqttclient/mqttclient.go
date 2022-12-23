@@ -227,9 +227,9 @@ func Ftp(target string, ip string, direction int) {
 	case 0: //this is a download
 		fic, err := os.Create(cible)
 		if err != nil {
-			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error creating disk config:%v", err))
+			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error downloading disk config:%v", err))
 		}
-		err = client.Retrieve("/config.json", fic)
+		err = client.Retrieve("config.json", fic)
 		if err != nil {
 			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error retrieving device config:%v", err))
 		}
