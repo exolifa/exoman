@@ -104,6 +104,8 @@ func Getdevices() []string {
 
 // GetIP return the ip address of a specific device
 func GetIP(target string) string {
+	go logger.logme("global", "mqttclient", "GetIP", "info", fmt.Springf("liste des devices: %s\n",Getdevices()))
+	go logger.Logme("global", "mqttclient", "GetIP", "info", fmt.Sprintf("IP adress for %s is %s\n", target,iotlist[]target).Devip)
 	return iotlist[target].Devip
 }
 
