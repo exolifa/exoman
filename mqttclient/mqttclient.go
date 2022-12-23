@@ -218,6 +218,7 @@ func Ftp(target string, ip string, direction int) {
 	}
 	client, err := goftp.DialConfig(config, ip)
 	if err != nil {
+		go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error creating ftp client:%v for ip:%v and config: %v", err,ip,config))
 		panic(err)
 	}
 	switch direction {
@@ -226,7 +227,7 @@ func Ftp(target string, ip string, direction int) {
 		if err != nil {
 			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error creating disk config:%v", err))
 		}
-		err = client.Retrieve("config.json", fic)
+		err = client.Retrieve("/config.json", fic)
 		if err != nil {
 			go logger.Logme("global", "config", "Ftp", "fatal", fmt.Sprintf("error retrieving device config:%v", err))
 		}
