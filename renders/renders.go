@@ -68,11 +68,11 @@ func Statuspage(c *gin.Context) {
 
 // Modulepage return full list options to configure, view logs ,etc of a module
 func Modulepage(c *gin.Context) {
-	go logger.Logme("global", "renders", "modulespage", "info", fmt.Sprint("building modules page"))
+	go logger.Logme("global", "renders", "modulespage", "info", fmt.Sprint("building modules page\n"))
 	var myconfiglist Configdata
 	action := c.PostForm("action")
 	target := c.PostForm("target")
-	go logger.logme("global", "renders", "modulespage", "info",fmt.Sprintf("page is for module: %v with action %v",target,action))
+	go logger.Logme("global", "renders", "modulespage", "info",fmt.Sprintf("page is for module: %v with action %v\n",target,action))
 	switch action {
 	case "Scan":
 		mqttclient.Commande(target, "scan")
