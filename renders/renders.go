@@ -72,6 +72,7 @@ func Modulepage(c *gin.Context) {
 	var myconfiglist Configdata
 	action := c.PostForm("action")
 	target := c.PostForm("target")
+	go logger.logme("global", "renders", "modulespage", "info",fmt.Sprintf("page is for module: %v with action %v",target,action))
 	switch action {
 	case "Scan":
 		mqttclient.Commande(target, "scan")
